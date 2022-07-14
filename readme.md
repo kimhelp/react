@@ -7,7 +7,7 @@ npm install mongoose --save
 
 # mongoDB 연결
 
-operat8009 qwer1234
+private.md에 아이디 비번있음.
 
 # body-parser dependency
 
@@ -25,3 +25,14 @@ $ npm i nodemon --save-dev
 
 실행 명령어 설정
 pakage.json "backend" : "nodemon index.js"
+
+# Bcrypt
+
+비크립트를 이용한 암호화후 데이터베이스에 올리기
+
+```
+$ npm i bcrypt --save
+```
+
+1. salt 생성
+2. 비밀번호 암호화
