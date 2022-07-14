@@ -1,3 +1,7 @@
+# 시작
+
+front : npm run backend
+
 # mongoose 다운로드
 
 ```
@@ -36,3 +40,16 @@ $ npm i bcrypt --save
 
 1. salt 생성
 2. 비밀번호 암호화
+3. saltRounds = salt가 몇 글자인지 정하는것
+
+# 로그인 토큰 만들기 > JsonWebToken
+
+```
+$ npm i jsonwebtoken --save
+```
+
+# 토큰을 쿠키에 저장하려고 cookie-parser를 씀
+
+```
+$ npm i cookie-parser --save
+```

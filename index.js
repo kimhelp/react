@@ -4,11 +4,14 @@ const port = 5000;
 const { User } = require("./models/User");
 const bodyParser = require("body-parser");
 const config = require("./config/key");
+const cookieParser = require("cookie-parser");
 
 //클라이언트에서 오는 정보를 서버에서 분석해 가져오려고 쓴다.
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
+
+app.use(cookieParser());
 
 const mongoose = require("mongoose");
 mongoose
@@ -28,6 +31,38 @@ app.post("/register", (req, res) => {
       success: true,
     });
   });
+});
+
+app.post("/login", (req, res) => {
+  //1. 데이터베이스에서 요청한 email찾기
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (!user) {
+      return res.json({
+        loginSuccess: false,
+        message: "제공된 이메일에 해당하는 유저가 없습니다.",
+      });
+    }
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (!isMatch)
+        return res.json({
+          loginSuccess: false,
+          message: "비밀번호가 틀렸습니다.",
+        });
+
+      //로그인시 토큰 생성 코드
+      user.generateToken((err, user) => {
+        if (err) return res.status(400).send(err);
+        //토큰을 저장한다. 어디에? 쿠키, 로컬스토리지 > 나는 쿠키
+        //라이브러리 다운받아야한다. cookie-parser
+        res
+          .cookie("x_auth", user.token)
+          .status(200)
+          .json({ loginSuccess: true, userId: user._id });
+      });
+    });
+  });
+  //2. 데이터베이스에서 요청한 email이 있다면 비밀번호가 같은지 확인
+  //3. 비밀 번호까지 같다면 token 생성
 });
 
 app.listen(port, () => console.log(`example app listening on port ${port}!`));
