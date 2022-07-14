@@ -4,3 +4,6 @@
 npm install mongoose --save
 
 ```
+# mongoDB 연결
+
+operat8009  qwer1234
