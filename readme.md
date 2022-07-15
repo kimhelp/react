@@ -53,3 +53,12 @@ $ npm i jsonwebtoken --save
 ```
 $ npm i cookie-parser --save
 ```
+
+# auth route 만들기
+
+이유 : 어떤 사이트를 들어갔을때 > 로그인 후 이용가능한 페이지와 어드민로그인 후 이용가능한 페이지를 구분
+
+지금 데이터 상태
+
+> DB User정보에 Token값 들어가 있음
+> 쿠키에 토큰도 들어있음.

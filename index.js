@@ -5,6 +5,7 @@ const { User } = require("./models/User");
 const bodyParser = require("body-parser");
 const config = require("./config/key");
 const cookieParser = require("cookie-parser");
+const auth = require("./middleware/auth");
 
 //클라이언트에서 오는 정보를 서버에서 분석해 가져오려고 쓴다.
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 const mongoose = require("mongoose");
+const { request } = require("express");
 mongoose
   .connect(config.mongoURI)
   .then(() => console.log("MongoDB Connected.."))
@@ -21,7 +23,7 @@ mongoose
 
 app.get("/", (req, res) => res.send("hello"));
 
-app.post("/register", (req, res) => {
+app.post("/api/users/register", (req, res) => {
   //회원가입 할때 필요한 정보들을 client에서 가져오면
   //그것들을 데이터 베이스에 넣어준다.
   const user = new User(req.body);
@@ -33,7 +35,7 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
   //1. 데이터베이스에서 요청한 email찾기
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
@@ -63,6 +65,26 @@ app.post("/login", (req, res) => {
   });
   //2. 데이터베이스에서 요청한 email이 있다면 비밀번호가 같은지 확인
   //3. 비밀 번호까지 같다면 token 생성
+});
+
+app.get("/api/users/auth", auth, (req, res) => {
+  //콜백function을 받기전에 auth
+  User.findByToken();
+
+  //auth.js에 findByToken을 통과해서 왔다면 Authentication이 true라는 말
+
+  //성공 했다면 user정보 제공
+  res.status(200).json({
+    _id: req.user._id,
+    //role 0 : 일반유저 role !0 : 어드민유저
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
+  });
 });
 
 app.listen(port, () => console.log(`example app listening on port ${port}!`));
