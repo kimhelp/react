@@ -39,6 +39,7 @@ const userSchema = mongoose.Schema({
 userSchema.pre("save", function (next) {
   var user = this;
   if (user.isModified("password")) {
+    //비밀번호를 암호화 시킨다.
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) return next(err);
       //비밀번호 암호화, bcrypt
@@ -54,6 +55,7 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
+
 userSchema.methods.comparePassword = function (plainPassword, cb) {
   //가공되지않은 클라이언트 패스워드 : plainPassword
   //이미 암호화 되어서 데이터베이스에 담겨있는 비밀번호는 복호화 할 수 없기 때문에
@@ -63,6 +65,7 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
     cb(null, isMatch);
   });
 };
+
 userSchema.methods.generateToken = function (cb) {
   var user = this;
   //jsonwebtoken을 이용해서 토큰 생성

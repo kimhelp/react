@@ -62,3 +62,34 @@ $ npm i cookie-parser --save
 
 > DB User정보에 Token값 들어가 있음
 > 쿠키에 토큰도 들어있음.
+
+# 로그아웃 route
+
+1. 로그아웃 하려는 유저를 데이터 베이스에서 찾아서
+2. 유저의 토큰을 지워준다.
+
+# react 설치
+
+```sh
+$ npx create-react-app .
+```
+
+# functioanl 컴포넌트 설정
+
+extensions에서 es7 > ES7 React/Redux/GraphQL/React-Native snippets 다운로드 > rfce
+
+# class 컴포넌트 설정
+
+extensions에서 es7 > ES7 React/Redux/GraphQL/React-Native snippets 다운로드 > rcc
+
+# react-router-dom 설치
+
+```sh
+$ npm install react-router-dom --save
+```
+
+# axios 설치
+
+```sh
+$ npm i axios --save
+```
