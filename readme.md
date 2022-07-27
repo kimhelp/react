@@ -93,3 +93,9 @@ $ npm install react-router-dom --save
 ```sh
 $ npm i axios --save
 ```
+
+# proxy 설치
+
+```sh
+$ npm i http-proxy-middleware --save
+```
