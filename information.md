@@ -156,6 +156,20 @@ npm i redux react-redux redux-promise redux-thunk --save
 
 ### redux data flow > 한방향으로 데이터가 흐른다.
 
-## reducer
+### reducer
 
 이전 state와 action object를 받은 후에 next state를 return한다!
+
+# react component
+
+1. class component
+
+2. functional component
+   > 기능 제약이 많다... 그래서 필요한 react hooks!
+
+### react hooks!
+
+1. useState
+2. useEffect
+
+# login 페이지 만들기
