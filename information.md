@@ -3,6 +3,8 @@
 front : npm run start
 back : npm run backend
 
+한번에 : npm run dev
+
 # mongoose 다운로드
 
 ```
