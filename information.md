@@ -175,3 +175,12 @@ npm i redux react-redux redux-promise redux-thunk --save
 2. useEffect
 
 # login 페이지 만들기
+
+# register 페이지 만들기
+
+# logout 기능 만들기
+
+# Auth, 인증 기능
+
+auth > request > back end
+

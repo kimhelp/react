@@ -22,11 +22,14 @@ mongoose
 
 app.get("/", (req, res) => res.send("hello"));
 
+app.get("/api/hello", (req, res) => res.send("Hello World!~~ "));
+
 app.post("/api/users/register", (req, res) => {
-  //회원가입 할때 필요한 정보들을 client에서 가져오면
-  //그것들을 데이터 베이스에 넣어준다.
+  //회원 가입 할떄 필요한 정보들을  client에서 가져오면
+  //그것들을  데이터 베이스에 넣어준다.
   const user = new User(req.body);
-  user.save((err, doc) => {
+
+  user.save((err, userInfo) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
       success: true,
@@ -61,8 +64,8 @@ app.post("/api/users/login", (req, res) => {
       //비밀번호 까지 맞다면 토큰을 생성하기.
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
-        //토큰을 저장한다. 어디에? 쿠키, 로컬스토리지 > 나는 쿠키
-        //라이브러리 다운받아야한다. cookie-parser
+
+        // 토큰을 저장한다.  어디에 ?  쿠키 , 로컳스토리지
         res
           .cookie("x_auth", user.token)
           .status(200)
@@ -70,20 +73,14 @@ app.post("/api/users/login", (req, res) => {
       });
     });
   });
-  //2. 데이터베이스에서 요청한 email이 있다면 비밀번호가 같은지 확인
-  //3. 비밀 번호까지 같다면 token 생성
 });
 
+// role 1 어드민    role 2 특정 부서 어드민
+// role 0 -> 일반유저   role 0이 아니면  관리자
 app.get("/api/users/auth", auth, (req, res) => {
-  //콜백function을 받기전에 auth
-  User.findByToken();
-
-  //auth.js에 findByToken을 통과해서 왔다면 Authentication이 true라는 말
-
-  //성공 했다면 user정보 제공
+  //여기 까지 미들웨어를 통과해 왔다는 얘기는  Authentication 이 True 라는 말.
   res.status(200).json({
     _id: req.user._id,
-    //role 0 : 일반유저 role !0 : 어드민유저
     isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
     email: req.user.email,
@@ -95,21 +92,14 @@ app.get("/api/users/auth", auth, (req, res) => {
 });
 
 app.get("/api/users/logout", auth, (req, res) => {
-  //데이터 베이스에서 id로 유저를 찾아 업데이트 하는 메서드
-  User.findOneAndUpdate(
-    { _id: req.user._id },
-    {
-      token: "",
-    },
-    (err, user) => {
-      if (err) return res.json({ success: false, err });
-      return res.status(200).send({
-        success: true,
-      });
-    }
-  );
+  // console.log('req.user', req.user)
+  User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).send({
+      success: true,
+    });
+  });
 });
-app.get("/api/hello", (req, res) => res.send("Hello World!~~ "));
 
 const port = 5000;
 app.listen(port, () => console.log(`example app listening on port ${port}!`));
