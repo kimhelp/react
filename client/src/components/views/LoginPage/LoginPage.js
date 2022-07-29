@@ -1,12 +1,12 @@
 import { Axios } from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../_actions/user_action";
-// import { withRouter } from "react-router-dom";
 
 function LoginPage(props) {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
 
@@ -28,7 +28,7 @@ function LoginPage(props) {
 
     dispatch(loginUser(body)).then((response) => {
       if (response.payload.loginSuccess) {
-        props.history.push("/");
+        navigate("/");
       } else {
         alert("Error˝");
       }
@@ -61,3 +61,4 @@ function LoginPage(props) {
 }
 
 export default LoginPage;
+// export default LoginPage;

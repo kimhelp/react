@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../_actions/user_action";
 import Axios from "axios";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -43,7 +44,7 @@ function RegisterPage(props) {
 
     dispatch(registerUser(body)).then((response) => {
       if (response.payload.success) {
-        props.history.push("/");
+        navigate("/");
       } else {
         alert("회원가입 실패");
         console.log(response);
